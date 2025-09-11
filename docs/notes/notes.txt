@@ -6,3 +6,6 @@ Ideas and Selection Rationale
     - Calendar w assignment tracking
     Purpose:
     Help students to stay organized, share study materials and track assignments
+
+Branching Strategy
+    I will have a main branch, a feature branch where I add new features and a test branch where I actually develop new features and maek sure they work
