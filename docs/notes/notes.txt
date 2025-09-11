@@ -1,0 +1,8 @@
+Ideas and Selection Rationale
+    Academic resource platform
+    Features:
+    - User accounts/profiles
+    - Upload/download study materials
+    - Calendar w assignment tracking
+    Purpose:
+    Help students to stay organized, share study materials and track assignments
