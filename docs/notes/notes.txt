@@ -9,3 +9,8 @@ Ideas and Selection Rationale
 
 Branching Strategy
     I will have a main branch, a feature branch where I add new features and a test branch where I actually develop new features and maek sure they work
+
+Branch Usage Reflections
+
+Django Setup
+    The app name is meant to be just a placeholder but I am confused about what the startproject folder_name step was about
