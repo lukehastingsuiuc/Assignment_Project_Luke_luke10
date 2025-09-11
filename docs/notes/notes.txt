@@ -14,3 +14,5 @@ Branch Usage Reflections
 
 Django Setup
     The app name is meant to be just a placeholder but I am confused about what the startproject folder_name step was about
+Virtual Environment Choices
+    I don't understand what is meant by my choice of virtual environment
