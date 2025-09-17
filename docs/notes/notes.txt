@@ -16,3 +16,13 @@ Django Setup
     The app name is meant to be just a placeholder but I am confused about what the startproject folder_name step was about
 Virtual Environment Choices
     I don't understand what is meant by my choice of virtual environment
+_______________________________________________________
+Assignment 3:
+Why these models/fields?:
+The main content of the site will be study materials and a calendar with due dates, so I figured I'd need those and their relationship to the user.
+Your relationship choices:
+Materials and assignments need to be deleted in the event the user is deleted because they belong strictly to the user
+Constraints:
+Email is unique because no 2 users should be using the same email
+How you seeded test data:
+I added a few random examples of what materialsa user might have and made a couple of example assignments
