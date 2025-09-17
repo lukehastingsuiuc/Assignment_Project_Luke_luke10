@@ -4,7 +4,7 @@ from django.db import models
 
 class User(models.Model):
     user_id = models.AutoField(primary_key=True)
-    password = models.Charfield(max_length=15)
+    password = models.CharField(max_length=15)
     email = models.EmailField(unique=True)
 
 class Assignment(models.Model):
@@ -18,5 +18,5 @@ class Assignment(models.Model):
 
 class Materials(models.Model):
     mat_id = models.AutoField(primary_key=True)
-    type = models.Charfield(max_length=20)
+    type = models.CharField(max_length=20)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
