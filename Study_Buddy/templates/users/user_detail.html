@@ -1,0 +1,22 @@
+{% extends "users/base.html" %}
+
+{% block title %}
+    User Detail
+{% endblock %}
+
+{% block user_content %}
+    <h2>{{ single_user_var_for_looping }}</h2>
+    <p><strong>email:</strong> {{ single_user_var_for_looping.email }}</p>
+
+    <hr>
+
+    <h3>User Assignments</h3>
+    <ul>
+        {% for a in assignments_var_for_looping %}
+            <li>{{ a.due_date}} </li>
+        {% empty %}
+            <li><em>No assignments</em></li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
