@@ -19,10 +19,6 @@ def user_list_render(request):
     context = {"user_list_html": users}
     return render(request, "users/user_list.html", context)
 
-class UserListView(ListView):
-    model = User
-    context_object_name = "user_rows_for_looping"
-
 class UserDetail(View):
     def get(self, request, primary_key):
         user = get_object_or_404(User, pk=primary_key)

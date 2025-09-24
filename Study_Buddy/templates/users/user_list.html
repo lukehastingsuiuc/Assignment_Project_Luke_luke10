@@ -10,8 +10,6 @@
         {% for user_for_loop in user_list_html %}
             <li>
                 <a href=""> {{ user_for_loop }}</a>
-                <a href="{% url 'user-list-url %}">All Students</a>
-                <a href="/users_new_url/">All Students</a>
             </li>
         {% empty %}
             <li>No users yet!</li>

@@ -16,15 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from Study_Buddy.views import (user_list_view, user_list_render, UserListView, UserDetail)
+from Study_Buddy.views import (user_list_view, user_list_render, UserDetail)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("userlist/", user_list_view),
     path("users/", user_list_render),
-    path('user/',
-         UserListView.as_view(),
-         name='user_list-url'),
+
     path('user/<int:primary_key>/',
         UserDetail.as_view(),
         name='user_detail-url'),
