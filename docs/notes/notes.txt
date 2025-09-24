@@ -26,3 +26,10 @@ Constraints:
 Email is unique because no 2 users should be using the same email
 How you seeded test data:
 I added a few random examples of what materialsa user might have and made a couple of example assignments
+--------------------------------------------------------
+Assignment 4:
+I wrote two views because the HttpResponse view returns raw HTML as a string whereas the render() view queries the model, passes it to a context dictionary,
+and then returns a rendered template.
+This means that the render()method will actually show the content of the model, but I'm honestly uncertain what the HttpResponse is meant to show.
+
+
