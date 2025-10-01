@@ -32,4 +32,11 @@ I wrote two views because the HttpResponse view returns raw HTML as a string whe
 and then returns a rendered template.
 This means that the render()method will actually show the content of the model, but I'm honestly uncertain what the HttpResponse is meant to show.
 
-
+Assignment 6:
+Filtering:
+- Leaves only data that fits a given criteria
+- For example, searching for "John" returns the users whos email contains John
+Aggregation:
+- Show summaries of data
+- For example, in my project I show total number of users
+- I also show how many assignments are connected to each user
