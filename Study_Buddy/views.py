@@ -9,6 +9,13 @@ from django.db.models import Count, Q
 # Create your views here.
 
 
+class UserBaseView(View):
+    def get(self, request):
+        return render(
+            request,
+            'users/user_base.html',
+            context={'user_base_html': User.objects.all()}
+        )
 
 class UserListView(ListView):
     model = User

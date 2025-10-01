@@ -1,7 +1,11 @@
 from django.urls import path, include
-from Study_Buddy.views import (UserListView, UserDetail, AssignmentListView, MaterialsListView)
+from Study_Buddy.views import (UserListView, UserDetail, AssignmentListView, MaterialsListView, UserBaseView)
 
 urlpatterns = [
+    path('base/',
+         UserBaseView.as_view(),
+         name="user-base-url"),
+
     path('user/',
          UserListView.as_view(),
          name='user-list-url'),

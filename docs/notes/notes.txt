@@ -40,3 +40,14 @@ Aggregation:
 - Show summaries of data
 - For example, in my project I show total number of users
 - I also show how many assignments are connected to each user
+
+Assignment 5:
+Base CBVs:
+- You have to write the logic yourself inside get()
+- You have to explicitly call objects.all()
+- Doesn't know what to do with a model
+Generic CBVs:
+- More specialized
+- Reduce boilerplate because it prevents you from doing things manually
+Refactoring is useful because it improves readability and maintainability, reduces redundant queries, improves response times
+and prevents you from having to repeat code. For urls it avoids having to have deeply nested URLs in favor of cleaner paths.

@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+
+{% extends "users/base.html" %}
+
+{% block title %}
+    User List
+{% endblock %}
+
+{% block content %}
+    <h2>User List</h2>
+    <ul>
+
+        {% for user_for_loop in user_base_html %}
+
+            <li>
+                <a href=""> {{ user_for_loop }}</a>
+            </li>
+
+
+        {% empty %}
+
+            <li>No users yet!</li>
+
+        {% endfor %}
+    </ul>
+{% endblock %}
