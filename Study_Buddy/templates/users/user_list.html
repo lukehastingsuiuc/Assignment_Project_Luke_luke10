@@ -4,15 +4,47 @@
     User List
 {% endblock %}
 
-{% block user_content %}
+{% block content %}
     <h2>User List</h2>
     <ul>
-        {% for user_for_loop in user_list_html %}
+        {% for user_for_loop in user_rows_for_looping %}
             <li>
-                <a href=""> {{ user_for_loop }}</a>
+                <a href="{{ user_for_loop.get_absolute_url }}"> {{ user_for_loop }}</a>
             </li>
         {% empty %}
             <li>No users yet!</li>
         {% endfor %}
     </ul>
+{% endblock %}
+
+{% block send_search %}
+    <form method="get" class="row g-2 align-itmes-center mt-4">
+        <div class="col-12 col-sm-6 col-md-4">
+            <input type="search" name="q" value="{{ q }}" class="form-control"
+                   placeholder="Search by name">
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary" type="submit">Search</button>
+            {% if q %}<a class="btn btn-outline-secondary ms-2" href="{% url 'user-list-url' %}">Clear</a>{% endif %}
+        </div>
+    </form>
+{% endblock %}
+
+{% block filter %}
+    {% if q %}
+        <p class="text-muted mt-3 mb-2">result for "{{ q }}"</p>
+        <div class="card">
+            <ul class="list-group list-group-flush">
+                {% for s in search_results %}
+                    <li> class="list-group-item">
+                        <a href="{{ s.get_absolute_url }}">{{ s }}</a>
+                    </li>
+                {% empty %}
+                    <li> class="list-group-item text-muted"><em>No users found</em></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <p class="text-muted mt-3">result</p>
+    {% endif %}
 {% endblock %}

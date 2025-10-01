@@ -1,0 +1,18 @@
+{% extends "users/base.html" %}
+
+{% block title %}
+    Assignment List
+{% endblock %}
+
+{% block content %}
+    <h2>Assignment List</h2>
+    <ul>
+        {% for assignment_for_loop in assignment_rows_for_looping %}
+            <li>
+                <a href=""> {{ assignment_for_loop }}</a>
+            </li>
+        {% empty %}
+            <li>No assignments yet</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "users/base.html" %}
+
+{% block title %}
+    Material List
+{% endblock %}
+
+{% block content %}
+    <h2>Material List</h2>
+    <ul>
+        {% for material_for_loop in material_rows_for_looping %}
+            <li>
+                <a href=""> {{ material_for_loop }}</a>
+            </li>
+        {% empty %}
+            <li>No Materials yet</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

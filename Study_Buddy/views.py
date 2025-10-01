@@ -2,22 +2,38 @@
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView
 from django.views import View
-from .models import User
+from Study_Buddy.models import User, Assignment, Materials
+from django.views.generic import ListView
+from django.db.models import Count, Q
 # Create your views here.
 
-def user_list_view(request):
-    users = User.objects.all()
-    context = {"users": users}
-    template = loader.get_template("users/user_list.html")
-    output = template.render(context)
-    return HttpResponse(output)
 
-def user_list_render(request):
-    users = User.objects.all()
-    context = {"user_list_html": users}
-    return render(request, "users/user_list.html", context)
+
+class UserListView(ListView):
+    model = User
+    template_name = "users/user_list.html"
+    context_object_name = "user_rows_for_looping"
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        q = self.request.GET.get("q")
+        if q:
+            search_qs = User.objects.filter(email__icontains=q)
+        else:
+            search_qs = None
+        ctx["q"] = q
+        ctx["search_results"] = search_qs
+        ctx["total_users"] = User.objects.count()
+        return ctx
+class AssignmentListView(ListView):
+    model = Assignment
+    template_name = "users/assignment_list.html"
+    context_object_name = "assignment_rows_for_looping"
+
+class MaterialsListView(ListView):
+    model = Materials
+    template_name = "users/material_list.html"
+    context_object_name = "material_rows_for_looping"
 
 class UserDetail(View):
     def get(self, request, primary_key):
