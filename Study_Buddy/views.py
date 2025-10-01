@@ -24,6 +24,18 @@ class UserListView(ListView):
         ctx["q"] = q
         ctx["search_results"] = search_qs
         ctx["total_users"] = User.objects.count()
+        ctx["total_assignments"] = Assignment.objects.count()
+
+        ctx["assignments_per_user"] = (
+            User.objects
+            .values("user_id", "email")
+            .annotate(n_assignments=Count("assignments_related_name"))
+        )
+        ctx["materials_per_user"] = (
+            User.objects
+            .values("user_id", "email")
+            .annotate(n_materials=Count("materials_related_name"))
+        )
         return ctx
 class AssignmentListView(ListView):
     model = Assignment
