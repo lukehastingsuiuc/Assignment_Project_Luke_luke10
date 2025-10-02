@@ -1,5 +1,5 @@
 from django.urls import path, include
-from Study_Buddy.views import (UserListView, UserDetail, AssignmentListView, MaterialsListView, UserBaseView)
+from Study_Buddy.views import (UserListView, UserDetailView, AssignmentListView, MaterialsListView, UserBaseView)
 
 urlpatterns = [
     path('base/',
@@ -19,6 +19,6 @@ urlpatterns = [
          name='material-list-url'),
 
     path('user/<int:primary_key>/',
-         UserDetail.as_view(),
+         UserDetailView.as_view(),
          name='user-detail-url'),
 ]

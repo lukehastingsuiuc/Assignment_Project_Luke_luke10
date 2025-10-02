@@ -7,9 +7,7 @@
 {% block content %}
     <h2>{{ single_user_var_for_looping }}</h2>
     <p><strong>email:</strong> {{ single_user_var_for_looping.email }}</p>
-
     <hr>
-
     <h3>User Assignments</h3>
     <ul>
         {% for a in assignments_var_for_looping %}
@@ -18,5 +16,4 @@
             <li><em>No assignments</em></li>
         {% endfor %}
     </ul>
-
 {% endblock %}

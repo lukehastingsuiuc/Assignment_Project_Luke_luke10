@@ -4,7 +4,7 @@ from django.template import loader
 from django.shortcuts import render, get_object_or_404
 from django.views import View
 from Study_Buddy.models import User, Assignment, Materials
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.db.models import Count, Q
 # Create your views here.
 
@@ -54,7 +54,7 @@ class MaterialsListView(ListView):
     template_name = "users/material_list.html"
     context_object_name = "material_rows_for_looping"
 
-class UserDetail(View):
+class UserDetailView(DetailView):
     def get(self, request, primary_key):
         user = get_object_or_404(User, pk=primary_key)
         assignments = user.assignments_related_name.all()
