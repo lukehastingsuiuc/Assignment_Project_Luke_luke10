@@ -36,7 +36,7 @@ class UserListView(ListView):
         ctx["assignments_per_user"] = (
             User.objects
             .values("user_id", "email")
-            .annotate(n_assignments=Count("assignments_related_name"))
+            .annotate(n_assignments=Count("assignments_related_name")).order_by("-n_assignments")
         )
         ctx["materials_per_user"] = (
             User.objects
