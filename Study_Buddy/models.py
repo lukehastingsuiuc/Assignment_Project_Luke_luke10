@@ -8,7 +8,7 @@ class User(models.Model):
     password = models.CharField(max_length=15)
     email = models.EmailField(unique=True)
     def __str__(self):
-        base = f"{self.user_id}, {self.email}"
+        base = f"{self.email}"
         return f"{base}"
 
     def get_absolute_url(self):
@@ -28,5 +28,4 @@ class Assignment(models.Model):
 class Materials(models.Model):
     mat_id = models.AutoField(primary_key=True)
     type = models.CharField(max_length=20)
-    assignments_related_name = models.ForeignKey(User, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='materials_related_name')

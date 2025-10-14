@@ -21,7 +21,7 @@
     <form method="get" class="row g-2 align-itmes-center mt-4">
         <div class="col-12 col-sm-6 col-md-4">
             <input type="search" name="q" value="{{ q }}" class="form-control"
-                   placeholder="Search by name">
+                   placeholder="Search by email">
         </div>
         <div class="col-auto">
             <button class="btn btn-primary" type="submit">Search</button>
@@ -40,12 +40,12 @@
                         <a href="{{ s.get_absolute_url }}">{{ s }}</a>
                     </li>
                 {% empty %}
-                    <li> class="list-group-item text-muted"><em>No users found</em></li>
+                    <li><em>No users found</em></li>
                 {% endfor %}
             </ul>
         </div>
     {% else %}
-        <p class="text-muted mt-3">result</p>
+        <p class="text-muted mt-3"></p>
     {% endif %}
 {% endblock %}
 
@@ -71,7 +71,7 @@
             <tbody>
               {% for row in assignments_per_user %}
                 <tr>
-                  <td>{{ row.user_id }} — {{ row.email }}</td>
+                  <td>{{ row.email }}</td>
                   <td class="text-end">{{ row.n_assignments }}</td>
                 </tr>
               {% empty %}
@@ -94,7 +94,7 @@
             <tbody>
               {% for row in materials_per_user %}
                 <tr>
-                  <td>{{ row.user_id }} — {{ row.email }}</td>
+                  <td>{{ row.email }}</td>
                   <td class="text-end">{{ row.n_materials }}</td>
                 </tr>
               {% empty %}
