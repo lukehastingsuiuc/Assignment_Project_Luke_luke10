@@ -51,3 +51,10 @@ Generic CBVs:
 - Reduce boilerplate because it prevents you from doing things manually
 Refactoring is useful because it improves readability and maintainability, reduces redundant queries, improves response times
 and prevents you from having to repeat code. For urls it avoids having to have deeply nested URLs in favor of cleaner paths.
+
+Assignment 7:
+    - Static files are files that are stored and referenced for use in other pages
+    - My chart shows total assignments per user
+    - I used Count
+    - BytesIO allows you to store a temporary object in memory rather than on a disk
+    - tight_layout() adjust spacing between chart elements so that nothing gets cut off
