@@ -106,4 +106,15 @@
       </div>
     </div>
   </div>
+  <div class="card mt-3">
+    <div class="card-header py-2"><strong>Assignments per user chart</strong></div>
+    <div class="card-body text-center">
+
+        <!-- Here, using the 'url' tag, I'm directly referencing the chart projected at a url -->
+      <img src="{% url 'chart-users' %}" alt="Assignments per user chart"
+           class="img-fluid" style="max-width: 480px;">
+
+    </div>
+  </div>
+
 {% endblock %}

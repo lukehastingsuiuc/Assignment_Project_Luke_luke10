@@ -24,6 +24,9 @@ class Assignment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='assignments_related_name')
     class Meta:
         ordering = ['due_date']
+        def __str__(self):
+            base = f"{self.due_date}"
+            return f"{base}"
 
 class Materials(models.Model):
     mat_id = models.AutoField(primary_key=True)

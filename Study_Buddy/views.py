@@ -6,6 +6,10 @@ from django.views import View
 from Study_Buddy.models import User, Assignment, Materials
 from django.views.generic import ListView, DetailView
 from django.db.models import Count, Q
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from io import BytesIO
 # Create your views here.
 
 
@@ -66,3 +70,53 @@ class UserDetailView(DetailView):
                 'assignments_var_for_looping': assignments,
             },
         )
+
+def assignment_counts_chart(request):
+    # Count how many students belong to each section
+    # (Student.section has related_name='section_related_name')
+    data = (
+        User.objects
+        .annotate(assignment_count=Count("assignments_related_name"))
+        .order_by("email")
+    )
+
+    labels = [user.email for user in data]
+    counts = [user.assignment_count for user in data]
+
+    # fig: the whiteboard, and
+    # ax:  the rectangle you actually draw on.
+    fig, ax = plt.subplots(figsize=(6, 3), dpi=150)
+
+    # .bar:
+    #   •	This is Matplotlib’s method for creating a bar chart.
+    # 	•	It draws rectangular bars based on x values (labels) and heights (counts).
+    ax.bar(labels, counts, color="#13294B")  # Illinois Blue
+
+    ax.set_title("Assignments per User", fontsize=10, color="#13294B")
+
+    ax.set_xlabel("User", fontsize=8)
+    ax.set_ylabel("Assignments", fontsize=8)
+
+    ax.tick_params(axis="x", rotation=45, labelsize=8)
+    ax.tick_params(axis="y", labelsize=8)
+
+    # tight_layout() automatically adjusts the spacing between chart elements like:
+    # 	•	the axes labels (x/y),
+    # 	•	the title,
+    # 	•	and the plot area (bars, ticks, etc.)
+    # so that nothing gets cut off when you save or display the figure.
+
+    # Without tight_layout(), Matplotlib often leaves awkward margins
+    # or chops text off the edges when saving to an image file.
+    fig.tight_layout()
+
+    # BytesIO()
+    # 	•	It lets you create a temporary file-like object, but stored in memory, not on disk.
+    # 	•	Think of it as a fake file drawer that lives in RAM.
+    buf = BytesIO()
+    fig.savefig(buf, format="png")
+
+    plt.close(fig)
+    buf.seek(0)
+
+    return HttpResponse(buf.getvalue(), content_type="image/png")

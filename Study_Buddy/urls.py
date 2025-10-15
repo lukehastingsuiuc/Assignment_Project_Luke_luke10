@@ -1,5 +1,5 @@
 from django.urls import path, include
-from Study_Buddy.views import (UserListView, UserDetailView, AssignmentListView, MaterialsListView, UserBaseView)
+from Study_Buddy.views import (UserListView, UserDetailView, AssignmentListView, MaterialsListView, UserBaseView, assignment_counts_chart)
 
 urlpatterns = [
     path('base/',
@@ -21,4 +21,9 @@ urlpatterns = [
     path('user/<int:primary_key>/',
          UserDetailView.as_view(),
          name='user-detail-url'),
+
+    path("charts/users.png",
+         assignment_counts_chart,  # FUNCTION VIEW
+         name="chart-users"),
+
 ]
