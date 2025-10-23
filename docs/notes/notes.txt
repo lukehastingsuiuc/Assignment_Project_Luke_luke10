@@ -58,3 +58,26 @@ Assignment 7:
     - I used Count
     - BytesIO allows you to store a temporary object in memory rather than on a disk
     - tight_layout() adjust spacing between chart elements so that nothing gets cut off
+
+Assignment 8:
+    - CSRF is used to ensure only authorized users can use methods like POST to prevent unauthorized changes to the website
+    - Key steps in Djangos form submission process:
+        > Request comes in
+        > If POST: create a Form object and bind it to the submitted data
+        > Validate / clean the form / data
+        > Render the form
+    - FBV Pros
+        > Simple and flexible
+    - FBV Cons
+        > Lack of built-in tools
+        > You may have to rewrite common patterns many times
+    - CBV Pros
+        > Using generic views such as CreateView, UpdateView, and ListView avoids rewriting common patterns
+    - CBV Cons
+        > Can be harder to understand because of being less explicit
+    - Use GET when:
+        > Requesting data
+        > Dealing with non-sensitive data
+    - Use POST when:
+        > Creating/updating data
+        > Dealing with sensitive data
