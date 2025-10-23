@@ -36,7 +36,7 @@
         <div class="card">
             <ul class="list-group list-group-flush">
                 {% for s in search_results %}
-                    <li>
+                    <li class="list-group-item">
                         <a href="{{ s.get_absolute_url }}">{{ s }}</a>
                     </li>
                 {% empty %}

@@ -17,15 +17,16 @@ class User(models.Model):
                        )
 
 class Assignment(models.Model):
-    asn_id = models.AutoField(primary_key=True)
+
     due_date = models.DateField()
     past_due = models.BooleanField(default=False)
     due_soon = models.BooleanField(default=False)
+    title = models.CharField(max_length=20, primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='assignments_related_name')
     class Meta:
         ordering = ['due_date']
         def __str__(self):
-            base = f"{self.due_date}"
+            base = f"{self.title}"
             return f"{base}"
 
 class Materials(models.Model):

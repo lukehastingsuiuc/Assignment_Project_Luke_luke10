@@ -9,10 +9,18 @@
     <ul>
         {% for assignment_for_loop in assignment_rows_for_looping %}
             <li>
-                <a href=""> {{ assignment_for_loop }}</a>
+                <a href="{{ assignment_for_loop.get_absolute_url }}"> {{ assignment_for_loop }}</a>
             </li>
         {% empty %}
             <li>No assignments yet</li>
         {% endfor %}
     </ul>
+
+        <div class="container">
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="{% url 'class-add-assignment-url' %}">Add Assignments</a></li>
+
+
+        </ul>
+    </div>
 {% endblock %}

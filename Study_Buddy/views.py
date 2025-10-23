@@ -1,3 +1,4 @@
+from urllib import request
 
 from django.http import HttpResponse
 from django.template import loader
@@ -49,9 +50,14 @@ class UserListView(ListView):
         )
         return ctx
 class AssignmentListView(ListView):
+    def post(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
+
+
     model = Assignment
     template_name = "users/assignment_list.html"
     context_object_name = "assignment_rows_for_looping"
+
 
 class MaterialsListView(ListView):
     model = Materials
@@ -77,14 +83,12 @@ def assignment_counts_chart(request):
         .annotate(assignment_count=Count("assignments_related_name"))
         .order_by("email")
     )
-
     labels = [user.email for user in data]
     counts = [user.assignment_count for user in data]
 
     fig, ax = plt.subplots(figsize=(6, 3), dpi=150)
 
-    ax.bar(labels, counts, color="#13294B")  # Illinois Blue
-
+    ax.bar(labels, counts, color="#13294B")
     ax.set_title("Assignments per User", fontsize=10, color="#13294B")
 
     ax.set_xlabel("User", fontsize=8)
@@ -102,3 +106,27 @@ def assignment_counts_chart(request):
     buf.seek(0)
 
     return HttpResponse(buf.getvalue(), content_type="image/png")
+
+from django.shortcuts import redirect
+from .forms import AssignmentForm
+
+def add_assignment(request):
+    if request.method == "POST":
+        form = AssignmentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("assignment-list-url")
+    else:
+        form = AssignmentForm()
+    return render(request, "users/add_assignment.html", {"form": form})
+
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
+
+class AssignmentCreateView(CreateView):
+    model = Assignment
+    form_class = AssignmentForm
+    template_name = "users/add_assignment.html"
+    success_url = reverse_lazy("assignment-list-url")
+
+    
