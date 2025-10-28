@@ -24,7 +24,7 @@ class UserBaseView(View):
 
 class UserListView(ListView):
     model = User
-    template_name = "   users/user_list.html"
+    template_name = "users/user_list.html"
     context_object_name = "user_rows_for_looping"
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)

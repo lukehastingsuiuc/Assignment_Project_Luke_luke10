@@ -7,13 +7,9 @@
 {% block content %}
     <h2 class="mb-3">Assignment</h2>
 
-    <form
-        action="{% url 'assignment-list-url' %}"
-        method="post"
-        class="p-3 border rounded bg-white"
-    >
-      {% csrf_token %}
-      {{ form.as_p }}
+    <form method="post" action="{% url 'assignment-list-url' %}" class="p-3 border rounded bg-white">
+        {% csrf_token %}
+        {{ form.as_p }}
 
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
