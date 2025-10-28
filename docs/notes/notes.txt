@@ -81,3 +81,15 @@ Assignment 8:
     - Use POST when:
         > Creating/updating data
         > Dealing with sensitive data
+
+Assignment 9:
+    - JSON API
+        I think it's just an API that uses JSON for input and output
+    - HttpResponse vs JsonResponse
+        > I think HttpResponse returns raw html/text/images and JsonResponse returns more structured data
+    - The chart shows the total number of assignments per user.
+        > build absolute url to the api
+        > pull json from the api using absolute url
+        > save rows into lists
+        > rows are turned into a PNG using matplotlib
+        > PNG is returned using HttpResponse
