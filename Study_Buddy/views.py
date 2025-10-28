@@ -129,5 +129,62 @@ class AssignmentCreateView(CreateView):
     template_name = "users/add_assignment.html"
     success_url = reverse_lazy("assignment-list-url")
 
+from django.http import JsonResponse
+from django.db.models import Count, Q
 
-    
+
+
+class UsersAPI(View):
+    def get(self, request):
+        q = (request.GET.get("q") or "").strip()
+        qs = User.objects.all()
+        if q:
+            qs = qs.filter(Q(email__icontains=q))
+        data = (list(qs.values("email", "user_id").order_by("email")))
+        return JsonResponse({"count": len(data), "results": data})
+
+def api_assignments_per_user(request):
+    rows = (
+        User.objects
+        .annotate(n_assignments=Count("assignments_related_name"))
+    .values("email", "n_assignments")
+    .order_by("n_assignments")
+    )
+    return JsonResponse({"results": list(rows)})
+
+import json
+import urllib.request
+from django.urls import reverse
+from django.views.generic import TemplateView
+
+class AssignmentsChartPage(TemplateView):
+    template_name = "users/assignments_chart.html"
+
+def assignments_chart_png(request):
+    api_url = request.build_absolute_uri(reverse("api-assignments-per-user"))
+    with urllib.request.urlopen(api_url) as resp:
+        payload = json.load(resp)
+    rows = payload.get("results", [])
+    labels = [r["email"] for r in rows]
+    counts = [r["n_assignments"] for r in rows]
+    x = range(len(labels))
+    width = 0.4
+    fig, ax = plt.subplots(figsize=(6, 3), dpi=150)
+    ax.bar([i - width/2 for i in x], counts, width=width, color="#13294B")
+    ax.set_title("Assignments per User")
+    ax.set_ylabel("Assignments")
+    ax.set_xticks(list(x))
+    ax.set_xticklabels(labels, rotation=45, ha="right")
+    ax.legend()
+    fig.tight_layout()
+
+    buf=BytesIO()
+    fig.savefig(buf, format="png")
+    plt.close(fig)
+    buf.seek(0)
+    return HttpResponse(buf.getvalue(), content_type="image/png")
+
+def api_ping_json(request):
+    return JsonResponse({"ok": True})
+def api_ping_httpresponse(request):
+    return HttpResponse("ok: true", content_type="text/plain")

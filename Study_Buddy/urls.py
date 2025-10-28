@@ -1,5 +1,7 @@
 from django.urls import path, include
-from Study_Buddy.views import (UserListView, UserDetailView, AssignmentListView, MaterialsListView, UserBaseView, assignment_counts_chart, AssignmentCreateView)
+from Study_Buddy.views import (UserListView, UserDetailView, AssignmentListView, MaterialsListView, UserBaseView,
+                               assignment_counts_chart, AssignmentCreateView, UsersAPI, assignments_chart_png,
+                               AssignmentsChartPage)
 from . import views
 urlpatterns = [
     path('base/',
@@ -29,4 +31,14 @@ urlpatterns = [
     path("function-add-assignment/", views.add_assignment, name="function-add-assignment-url"),
 
     path("class-add-assignment/", AssignmentCreateView.as_view(), name="class-add-assignment-url"),
+
+    path("api/users", UsersAPI.as_view(), name="api-users"),
+
+    path("api/assignments-per-user", views.api_assignments_per_user, name="api-assignments-per-user"),
+
+    path("charts/assignments/", AssignmentsChartPage.as_view(), name="assignments-chart-page"),
+
+    path("charts/assignments.png", assignments_chart_png, name="assignments-chart-png"),
+    path("api/ping-httpresponse/", views.api_ping_httpresponse, name="api-ping-httpresponse"),
+    path("api/ping-json/", views.api_ping_json, name="api-ping-json"),
 ]
