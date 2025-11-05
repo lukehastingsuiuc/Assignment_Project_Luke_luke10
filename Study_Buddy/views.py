@@ -177,14 +177,35 @@ def assignments_chart_png(request):
     ax.set_xticklabels(labels, rotation=45, ha="right")
     ax.legend()
     fig.tight_layout()
-
     buf=BytesIO()
     fig.savefig(buf, format="png")
     plt.close(fig)
     buf.seek(0)
+
     return HttpResponse(buf.getvalue(), content_type="image/png")
 
 def api_ping_json(request):
     return JsonResponse({"ok": True})
 def api_ping_httpresponse(request):
     return HttpResponse("ok: true", content_type="text/plain")
+
+import requests
+
+
+class PokemonDemo(View):
+    def get(self, request):
+        q = self.request.GET.get("q")
+        params = {
+        }
+        try:
+            output_raw_all = requests.get("https://pokeapi.co/api/v2/pokemon/"+ q, params=params, timeout=5)
+            output_raw_all.raise_for_status()
+            output_polished_all = output_raw_all.json()
+            output_polished_name_only = output_polished_all.get("name", {})
+            output_polished_types_only = output_polished_all.get("types", {})
+            output_polished_height_only = output_polished_all.get("height", {})
+            output_polished_weight_only = output_polished_all.get("weight", {})
+            return JsonResponse({"ok": True, "name": output_polished_name_only, "types": output_polished_types_only, "height": output_polished_height_only, "weight": output_polished_weight_only,})
+        except requests.exceptions.RequestException as e:
+            return JsonResponse({"ok": False, "error": str(e)}, status=502)
+
