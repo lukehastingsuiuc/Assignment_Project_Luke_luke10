@@ -1,7 +1,7 @@
 from django.urls import path, include
 from Study_Buddy.views import (UserListView, UserDetailView, AssignmentListView, MaterialsListView, UserBaseView,
                                assignment_counts_chart, AssignmentCreateView, UsersAPI, assignments_chart_png,
-                               AssignmentsChartPage, PokemonDemo)
+                               AssignmentsChartPage, PokemonDemo, export_users_json, export_users_csv, ReportsView)
 from . import views
 urlpatterns = [
     path('base/',
@@ -40,4 +40,7 @@ urlpatterns = [
     path("api/ping-httpresponse/", views.api_ping_httpresponse, name="api-ping-httpresponse"),
     path("api/ping-json/", views.api_ping_json, name="api-ping-json"),
     path("api/pokemon/", PokemonDemo.as_view(), name="api-pokemon"),
+    path("reports/", ReportsView.as_view(), name="export-reports-url"),
+    path("export/users.csv", export_users_csv, name="export-users-csv"),
+    path("export/users.json", export_users_json, name="export-users-json"),
 ]

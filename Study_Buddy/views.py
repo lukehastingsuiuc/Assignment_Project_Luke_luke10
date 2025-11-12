@@ -1,3 +1,4 @@
+from datetime import datetime
 from urllib import request
 
 from django.http import HttpResponse
@@ -11,6 +12,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from io import BytesIO
+import csv
+import json
 # Create your views here.
 
 
@@ -209,3 +212,67 @@ class PokemonDemo(View):
         except requests.exceptions.RequestException as e:
             return JsonResponse({"ok": False, "error": str(e)}, status=502)
 
+def export_users_csv(request):
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+    filename = f"users_{timestamp}.csv"
+
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = f"attachment; filename={filename}"
+
+    writer = csv.writer(response)
+    writer.writerow(["email", "user_id"])
+
+    rows = (
+        User.objects
+        .values_list("email", "user_id")
+        .order_by("user_id")
+    )
+
+    for row in rows:
+        writer.writerow(row)
+
+    return response
+
+def export_users_json(request):
+    data = list(
+        User.objects
+        .values(
+            "user_id",
+            "email"
+        )
+        .order_by("user_id")
+    )
+
+    json_content = {
+        "generated_at": datetime.now().isoformat(timespec="seconds"),
+        "record_count": len(data),
+        "users": data,
+    }
+
+    response = JsonResponse(json_content, json_dumps_params={"indent": 2})
+
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+    filename = f"users_{timestamp}.json"
+    response["Content-Disposition"] = f"attachment; filename={filename}"
+
+    return response
+
+class ReportsView(TemplateView):
+    template_name = "users/reports.html"
+    redirect_field_name = "next"
+    
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["assignments_per_user"] = (
+            User.objects
+            .values("email", "user_id")
+            .annotate(n_assignments=Count("assignments_related_name"))
+            .order_by("user_id")
+        )
+        ctx["materials_per_user"] = (
+            User.objects
+            .values("email", "user_id")
+            .annotate(n_materials=Count("materials_related_name"))
+            .order_by("user_id")
+        )
+        return ctx
