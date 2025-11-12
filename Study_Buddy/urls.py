@@ -1,3 +1,4 @@
+from django.contrib.auth.views import LogoutView, LoginView
 from django.urls import path, include
 from Study_Buddy.views import (UserListView, UserDetailView, AssignmentListView, MaterialsListView, UserBaseView,
                                assignment_counts_chart, AssignmentCreateView, UsersAPI, assignments_chart_png,
@@ -43,4 +44,8 @@ urlpatterns = [
     path("reports/", ReportsView.as_view(), name="export-reports-url"),
     path("export/users.csv", export_users_csv, name="export-users-csv"),
     path("export/users.json", export_users_json, name="export-users-json"),
+    path("signup/", views.signup_view, name="signup_urlpattern"),
+    path("login/", LoginView.as_view(template_name="users/login.html"), name="login_urlpattern"),
+    path("logout/", LogoutView.as_view(next_page="login_urlpattern"), name="logout_urlpattern"),
+
 ]

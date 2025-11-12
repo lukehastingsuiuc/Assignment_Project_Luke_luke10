@@ -1,6 +1,8 @@
 from datetime import datetime
 from urllib import request
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, get_object_or_404
@@ -9,6 +11,9 @@ from Study_Buddy.models import User, Assignment, Materials
 from django.views.generic import ListView, DetailView
 from django.db.models import Count, Q
 import matplotlib
+
+from .forms_auth import UserSignUpForm
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from io import BytesIO
@@ -17,7 +22,7 @@ import json
 # Create your views here.
 
 
-class UserBaseView(View):
+class UserBaseView(LoginRequiredMixin, View):
     def get(self, request):
         return render(
             request,
@@ -25,7 +30,7 @@ class UserBaseView(View):
             context={'user_base_html': User.objects.all()}
         )
 
-class UserListView(ListView):
+class UserListView(LoginRequiredMixin, ListView):
     model = User
     template_name = "users/user_list.html"
     context_object_name = "user_rows_for_looping"
@@ -52,7 +57,7 @@ class UserListView(ListView):
             .annotate(n_materials=Count("materials_related_name"))
         )
         return ctx
-class AssignmentListView(ListView):
+class AssignmentListView(LoginRequiredMixin, ListView):
     def post(self, request, *args, **kwargs):
         return self.get(request, *args, **kwargs)
 
@@ -62,12 +67,12 @@ class AssignmentListView(ListView):
     context_object_name = "assignment_rows_for_looping"
 
 
-class MaterialsListView(ListView):
+class MaterialsListView(LoginRequiredMixin, ListView):
     model = Materials
     template_name = "users/material_list.html"
     context_object_name = "material_rows_for_looping"
 
-class UserDetailView(DetailView):
+class UserDetailView(LoginRequiredMixin, DetailView):
     def get(self, request, primary_key):
         user = get_object_or_404(User, pk=primary_key)
         assignments = user.assignments_related_name.all()
@@ -79,7 +84,7 @@ class UserDetailView(DetailView):
                 'assignments_var_for_looping': assignments,
             },
         )
-
+@login_required(login_url='login_urlpattern')
 def assignment_counts_chart(request):
     data = (
         User.objects
@@ -113,6 +118,7 @@ def assignment_counts_chart(request):
 from django.shortcuts import redirect
 from .forms import AssignmentForm
 
+@login_required(login_url='login_urlpattern')
 def add_assignment(request):
     if request.method == "POST":
         form = AssignmentForm(request.POST)
@@ -137,7 +143,7 @@ from django.db.models import Count, Q
 
 
 
-class UsersAPI(View):
+class UsersAPI(LoginRequiredMixin, View):
     def get(self, request):
         q = (request.GET.get("q") or "").strip()
         qs = User.objects.all()
@@ -146,6 +152,7 @@ class UsersAPI(View):
         data = (list(qs.values("email", "user_id").order_by("email")))
         return JsonResponse({"count": len(data), "results": data})
 
+@login_required(login_url='login_urlpattern')
 def api_assignments_per_user(request):
     rows = (
         User.objects
@@ -160,9 +167,10 @@ import urllib.request
 from django.urls import reverse
 from django.views.generic import TemplateView
 
-class AssignmentsChartPage(TemplateView):
+class AssignmentsChartPage(LoginRequiredMixin, TemplateView):
     template_name = "users/assignments_chart.html"
 
+@login_required(login_url='login_urlpattern')
 def assignments_chart_png(request):
     api_url = request.build_absolute_uri(reverse("api-assignments-per-user"))
     with urllib.request.urlopen(api_url) as resp:
@@ -187,15 +195,17 @@ def assignments_chart_png(request):
 
     return HttpResponse(buf.getvalue(), content_type="image/png")
 
+@login_required(login_url='login_urlpattern')
 def api_ping_json(request):
     return JsonResponse({"ok": True})
+@login_required(login_url='login_urlpattern')
 def api_ping_httpresponse(request):
     return HttpResponse("ok: true", content_type="text/plain")
 
 import requests
 
 
-class PokemonDemo(View):
+class PokemonDemo(LoginRequiredMixin, View):
     def get(self, request):
         q = self.request.GET.get("q")
         params = {
@@ -212,6 +222,7 @@ class PokemonDemo(View):
         except requests.exceptions.RequestException as e:
             return JsonResponse({"ok": False, "error": str(e)}, status=502)
 
+@login_required(login_url='login_urlpattern')
 def export_users_csv(request):
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
     filename = f"users_{timestamp}.csv"
@@ -233,6 +244,7 @@ def export_users_csv(request):
 
     return response
 
+@login_required(login_url='login_urlpattern')
 def export_users_json(request):
     data = list(
         User.objects
@@ -257,7 +269,7 @@ def export_users_json(request):
 
     return response
 
-class ReportsView(TemplateView):
+class ReportsView(LoginRequiredMixin, TemplateView):
     template_name = "users/reports.html"
     redirect_field_name = "next"
     
@@ -276,3 +288,17 @@ class ReportsView(TemplateView):
             .order_by("user_id")
         )
         return ctx
+
+from django.contrib.auth import login
+from .forms_auth import UserSignUpForm
+
+def signup_view(request):
+    if request.method == "POST":
+        form = UserSignUpForm(request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            login(request, new_user)
+            return redirect("user-list-url")
+    else:
+        form = UserSignUpForm()
+    return render(request, "users/signup.html", {"form": form})
