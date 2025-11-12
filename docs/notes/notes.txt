@@ -106,3 +106,8 @@ Part 1:
     - I generated the json file by putting a list of the data from the User table into a dictionary that I then returns as a json response
     - I included the user id and email columns in the files
     - The reports page includes summaries of assignments per user and materials per user
+Part 2:
+    - Authentication protects the website from being accessed without an account and allows for giving different levels of permissions
+    - LoginRequiredMinin and @login_required make it so that a user cannot access that view without being logged into an account
+    - I think the next query parameter is what takes the user to the login page from the logout url
+    - If a user isn't logged in and tries to access a protected page they will be redirected to the login page
