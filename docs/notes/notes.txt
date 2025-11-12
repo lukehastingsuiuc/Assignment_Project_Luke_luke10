@@ -99,3 +99,10 @@ Assignment 10:
     - I extracted the name, types, height and weight field because that's probably what would
         be included in a Pokedex entry
     - I returned an error jsonresponse if an exception occurs
+
+Assignment 11:
+Part 1:
+    - I generated the csv file by opening a csv writer and then giving that csv writer a list of values from the User table that I wanted it to write into the file
+    - I generated the json file by putting a list of the data from the User table into a dictionary that I then returns as a json response
+    - I included the user id and email columns in the files
+    - The reports page includes summaries of assignments per user and materials per user
