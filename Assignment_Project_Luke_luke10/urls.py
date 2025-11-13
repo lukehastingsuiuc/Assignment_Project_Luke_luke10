@@ -2,9 +2,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.views import LoginView, LogoutView
 
+from Assignment_Project_Luke_luke10.views import redirect_root_view
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Study_Buddy.urls')),
+    path('', redirect_root_view),
     path('login/',
          LoginView.as_view(template_name='users/login.html'),
          name='login_urlpattern'),
